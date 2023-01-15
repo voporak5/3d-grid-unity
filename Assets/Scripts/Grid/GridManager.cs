@@ -49,8 +49,10 @@
         //Binary search to find node
         private Node FindHelper(int row, int column, int left, int right)
         {
-            if (left > right) { return null; }
-            
+            if (left > right) return null;
+            if (left >= NODES.Length) return null;
+            if (right <= -1) return null;
+
             int mid = (left + right) / 2;
 
             Node n = NODES[mid];
