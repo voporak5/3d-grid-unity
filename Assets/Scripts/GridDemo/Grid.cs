@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using CCintron.Grid;
 
 namespace CCintron.GridDemo
 {
     public class Grid : GridManager
     {
-        private Material nodeNeutralMat;
-        private Material nodeSelectedMat;
+        private Material cellNeutralMat;
+        private Material cellSelectedMat;
 
         public Grid(int size) 
             : base(size)
@@ -24,13 +22,13 @@ namespace CCintron.GridDemo
 
         void Init()
         {
-            nodeNeutralMat = (Material)Resources.Load("Materials/GridNeutral");
-            nodeSelectedMat = (Material)Resources.Load("Materials/GridSelected");
+            cellNeutralMat = (Material)Resources.Load("Materials/GridNeutral");
+            cellSelectedMat = (Material)Resources.Load("Materials/GridSelected");
         }
 
-        protected override Node CreateNode(int row, int column)
+        protected override Cell CreateCell(int row, int column)
         {
-            return new GridNode(row, column, nodeNeutralMat, nodeSelectedMat);
+            return new GridCell(row, column, cellNeutralMat, cellSelectedMat);
         }
     }
 }

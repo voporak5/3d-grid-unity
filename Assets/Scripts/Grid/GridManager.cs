@@ -5,20 +5,21 @@
         private readonly int ROWS;
         private readonly int COLUMNS;
 
+        private readonly Cell[] CELLS;
         private readonly Node[] NODES;
 
         public GridManager(int size)
         {
             ROWS = size;
             COLUMNS = size;
-            NODES = new Node[ROWS * COLUMNS];
+            CELLS = new Cell[ROWS * COLUMNS];
         }
 
         public GridManager(int rows,int columns)
         {
             ROWS = rows;
             COLUMNS = columns;
-            NODES = new Node[ROWS * COLUMNS];
+            CELLS = new Cell[ROWS * COLUMNS];
         }
 
         public void Build()
@@ -34,36 +35,41 @@
                 {
                     index = rowOffset + column;
 
-                    Node n = CreateNode(row, column);
+                    Cell n = CreateCell(row, column);
                     n.SetPosition(row, column);
-                    NODES[index] = n;
+                    CELLS[index] = n;
                 }
             }
         }
 
-        public Node Find(int row, int column)
+        public void SetNode(Node n, int row, int column)
         {
-            return FindHelper(row, column, 0, NODES.Length);
+            //looks at node grid and fills in row/column indices 
+        }
+
+        public Cell Find(int row, int column)
+        {
+            return FindHelper(row, column, 0, CELLS.Length);
         }
 
         //Binary search to find node
-        private Node FindHelper(int row, int column, int left, int right)
+        private Cell FindHelper(int row, int column, int left, int right)
         {
             if (left > right) return null;
-            if (left >= NODES.Length) return null;
+            if (left >= CELLS.Length) return null;
             if (right <= -1) return null;
 
             int mid = (left + right) / 2;
 
-            Node n = NODES[mid];
-            int compare = NODES[mid].Compare(row, column);
+            Cell n = CELLS[mid];
+            int compare = CELLS[mid].Compare(row, column);
 
-            if (compare == 0) { return NODES[mid]; }
+            if (compare == 0) { return CELLS[mid]; }
 
             if (compare < 0) { return FindHelper(row, column, mid + 1, right); }
             else { return FindHelper(row, column, left, right - 1); }
         }
 
-        protected abstract Node CreateNode(int row, int column);
+        protected abstract Cell CreateCell(int row, int column);
     }
 }

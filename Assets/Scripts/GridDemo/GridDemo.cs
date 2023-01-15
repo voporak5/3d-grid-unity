@@ -6,8 +6,8 @@ namespace CCintron.GridDemo
     public class GridDemo : MonoBehaviour
     {
         private Grid grid;
-        private Node selected;
-        private Node prev;
+        private Cell selected;
+        private Cell prev;
 
         // Start is called before the first frame update
         void Start()
@@ -22,18 +22,18 @@ namespace CCintron.GridDemo
 
         void OnMouseMoveAction(Vector3 v)
         {
-            Node node = grid.Find(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.z));
+            Cell cell = grid.Find(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.z));
             
-            if(node == null)
+            if(cell == null)
             {
                 prev = selected;
                 selected = null;
             }
-            else if (node != selected)
+            else if (cell != selected)
             {
-                node.Select();
+                cell.Select();
                 prev = selected;
-                selected = node;
+                selected = cell;
             }
 
             if(prev != null)

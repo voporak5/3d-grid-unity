@@ -3,14 +3,14 @@ using CCintron.Grid;
 
 namespace CCintron.GridDemo
 {
-    public class GridNode : Node
+    public class GridCell : Cell
     {
         private Material neutral;
         private Material selected;
         private Renderer renderer;
         private GameObject gameObject;
 
-        public GridNode(int row, int column,Material neutral, Material selected) 
+        public GridCell(int row, int column,Material neutral, Material selected) 
             : base(row, column)
         {
             this.neutral = neutral;
