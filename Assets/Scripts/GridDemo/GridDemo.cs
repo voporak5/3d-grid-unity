@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using CCintron.Grid;
+﻿using UnityEngine;
 
 namespace CCintron.GridDemo
 {
@@ -12,6 +9,9 @@ namespace CCintron.GridDemo
         {
             Grid grid = new Grid(5);
             grid.Build();
+
+            grid.Find(0, 0).Select();
+            grid.Find(4, 4).Select();
         }
     }
 }

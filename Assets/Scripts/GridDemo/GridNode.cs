@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using CCintron.Grid;
 
 namespace CCintron.GridDemo
@@ -12,14 +10,19 @@ namespace CCintron.GridDemo
         private Renderer renderer;
         private GameObject gameObject;
 
-        public GridNode(int row, int column, GameObject prefab,Material neutral, Material selected) 
+        public GridNode(int row, int column,Material neutral, Material selected) 
             : base(row, column)
         {
             this.neutral = neutral;
             this.selected = selected;
 
-            gameObject = Object.Instantiate(prefab) as GameObject;
+            //I'm using a full 1x1 cube for my prefab, but painting
+            //a full terrain with cubes is difficult so you could
+            //consider the using a 2D sprite as your node that is
+            //layed on top of a textured plane.
+            gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             renderer = gameObject.GetComponent<Renderer>();
+
             UnSelect();
         }
 

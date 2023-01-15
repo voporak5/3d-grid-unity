@@ -11,13 +11,13 @@
             COLUMN = column;
         }
 
-        public int Compare(Node node)
+        public int Compare(int row, int column)
         {
-            if (ROW < node.ROW) return -1;
-            else if (ROW > node.ROW) return 1;
+            if (ROW < row) return -1;
+            else if (ROW > row) return 1;
 
-            if (COLUMN < node.COLUMN) return -1;
-            else if (COLUMN > node.COLUMN) return 1;
+            if (COLUMN < column) return -1;
+            else if (COLUMN > column) return 1;
 
             return 0;
         }
