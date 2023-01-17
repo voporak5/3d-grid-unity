@@ -2,13 +2,18 @@
 {
     public class RowColumnPair
     {
-        public int Row { get; private set; }
-        public int Column { get; private set; }
+        public float Row { get; private set; }
+        public float Column { get; private set; }
 
-        public RowColumnPair(int row, int column)
+        public RowColumnPair(float row, float column)
         {
             Row = row;
             Column = column;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Row:{0} Column:{1}",Row,Column);
         }
     }
 }

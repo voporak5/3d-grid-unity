@@ -49,8 +49,9 @@ namespace CCintron.GridDemo
 
         void OnMouseClickAction(Vector3 v)
         {
-            Node n = factory.Get(GamePieceType.House);
-            n.SetPosition(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.z));
+            Node n = factory.Get(GamePieceType.Bridge);
+            RowColumnPair coord = n.GetCenterPointFromMouseCoord(v.x, v.z);
+            n.SetPosition(coord.Row, coord.Column);
         }
     }
 }

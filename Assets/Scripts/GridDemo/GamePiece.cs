@@ -13,7 +13,7 @@ namespace CCintron.GridDemo
             gameObject = Object.Instantiate(prefab);
         }
 
-        public override void SetPosition(int x, int y)
+        public override void SetPosition(float x, float y)
         {
             gameObject.transform.position = new Vector3(x, 0, y);
         }
