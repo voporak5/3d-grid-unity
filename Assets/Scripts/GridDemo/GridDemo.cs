@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using CCintron.Grid;
 
 namespace CCintron.GridDemo
@@ -6,52 +7,68 @@ namespace CCintron.GridDemo
     public class GridDemo : MonoBehaviour
     {
         private Grid grid;
-        private Cell selected;
-        private Cell prev;
         private AssetFactory factory;
+        private SelectionManager selectionManager;
+        private Node selectedNode;
+        private List<Cell> selectedCells;
 
-        // Start is called before the first frame update
         void Start()
         {
             grid = new Grid(5);
             grid.Build();
 
             factory = new AssetFactory();
+            selectionManager = new SelectionManager();
 
-            //grid.Find(0, 0).Select();
-            //grid.Find(4, 4).Select();
+            selectedCells = new List<Cell>();
+
+
             InputManager.AddListenerMouseMove(OnMouseMoveAction);
             InputManager.AddListenerMouseClick(OnMouseClickAction);
+            SelectionManager.AddListenerSelectPiece(OnSelectPieceAction);
         }
 
         void OnMouseMoveAction(Vector3 v)
         {
-            Cell cell = grid.Find(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.z));
-            
-            if(cell == null)
+            for(int i = 0; i < selectedCells.Count; i++)
             {
-                prev = selected;
-                selected = null;
-            }
-            else if (cell != selected)
-            {
-                cell.Select();
-                prev = selected;
-                selected = cell;
+                selectedCells[i].UnSelect();
             }
 
-            if(prev != null)
+            selectedCells.Clear();
+
+            if (selectedNode == null) return;
+
+            RowColumnPair center = selectedNode.GetCenterPointFromMouseCoord(v.x, v.z);
+            RowColumnPair[] coords = selectedNode.GetCoordsFromPoint(center.Row, center.Column);
+
+            for(int i = 0; i < coords.Length; i++)
             {
-                prev.UnSelect();
-                prev = null;
+                RowColumnPair coord = coords[i];
+                Cell cell = grid.Find((int)coord.Row, (int)coord.Column);
+                if (cell != null)
+                {
+                    cell.Select();
+                    selectedCells.Add(cell);
+                }
             }
         }
 
         void OnMouseClickAction(Vector3 v)
         {
-            Node n = factory.Get(GamePieceType.Bridge);
-            RowColumnPair coord = n.GetCenterPointFromMouseCoord(v.x, v.z);
-            n.SetPosition(coord.Row, coord.Column);
+            if (selectedNode == null) return;
+
+            RowColumnPair coord = selectedNode.GetCenterPointFromMouseCoord(v.x, v.z);
+            selectedNode.SetPosition(coord.Row, coord.Column);
+            selectedNode.Show();
+
+            selectedNode = null;
+        }
+
+        void OnSelectPieceAction(GamePieceType piece)
+        {
+            selectedNode = factory.Get(piece);
+            selectedNode.Hide();
         }
     }
 }

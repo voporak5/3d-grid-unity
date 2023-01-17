@@ -71,6 +71,8 @@ namespace CCintron.Grid
             return coordsFromPoint;
         }
 
+        public abstract void Show();
+        public abstract void Hide();
         public abstract void SetPosition(float x, float y);
     }
 }
