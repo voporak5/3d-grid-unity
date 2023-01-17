@@ -8,6 +8,7 @@ namespace CCintron.GridDemo
         private static InputManager Instance;
 
         private Action<Vector3> MouseMoveAction;
+        private Action<Vector3> MouseClickAction;
 
         //Shift down by -0.5 because cubes are centered at 0 along Y axis
         //and extend by 0.5 units.
@@ -36,16 +37,28 @@ namespace CCintron.GridDemo
             }
 
             MouseMoveAction?.Invoke(worldPosition);
+
+            if(Input.GetMouseButtonDown(0)) MouseClickAction?.Invoke(worldPosition);
         }
 
-        public static void AddListener(Action<Vector3> onMouseMove)
+        public static void AddListenerMouseMove(Action<Vector3> onMouseMove)
         {
             Instance.MouseMoveAction += onMouseMove;
         }
 
-        public static void RemoveListener(Action<Vector3> onMouseMove)
+        public static void RemoveListenerMouseMove(Action<Vector3> onMouseMove)
         {
             Instance.MouseMoveAction -= onMouseMove;
+        }
+
+        public static void AddListenerMouseClick(Action<Vector3> onMouseClick)
+        {
+            Instance.MouseClickAction += onMouseClick;
+        }
+
+        public static void RemoveListenerMouseClick(Action<Vector3> onMouseClick)
+        {
+            Instance.MouseClickAction -= onMouseClick;
         }
     }
 }

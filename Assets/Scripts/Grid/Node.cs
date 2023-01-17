@@ -20,6 +20,8 @@ namespace CCintron.Grid
 
                 }
             }
+
+            //TODO fix row/column so that things center properly
         }
 
         public RowColumnPair[] GetCoordsFromPoint(int row, int column)
@@ -34,5 +36,7 @@ namespace CCintron.Grid
 
             return coordsFromPoint;
         }
+
+        public abstract void SetPosition(int x, int y);
     }
 }
