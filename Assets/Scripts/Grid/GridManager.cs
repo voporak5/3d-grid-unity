@@ -4,6 +4,7 @@
     {
         private readonly int ROWS;
         private readonly int COLUMNS;
+        private readonly int CELL_COUNT;
 
         private readonly Cell[] CELLS;
         private readonly Node[] NODES;
@@ -12,7 +13,9 @@
         {
             ROWS = size;
             COLUMNS = size;
-            CELLS = new Cell[ROWS * COLUMNS];
+            CELL_COUNT = ROWS * COLUMNS;
+            CELLS = new Cell[CELL_COUNT];
+            NODES = new Node[CELL_COUNT];
         }
 
         public GridManager(int rows,int columns)
@@ -42,32 +45,43 @@
             }
         }
 
-        public void SetNode(Node n, int row, int column)
+        public bool GetCanSetNodeInCell(Cell cell)
         {
-            //looks at node grid and fills in row/column indices 
+            return NODES[GetCellIndex(cell)] == null;
         }
+
+        public void SetNode(Node node, Cell cell)
+        {
+            NODES[GetCellIndex(cell)] = node;
+        }        
 
         public Cell Find(int row, int column)
         {
-            return FindHelper(row, column, 0, CELLS.Length);
+            int index = FindHelper(row, column, 0, CELLS.Length);
+            return index != -1 ? CELLS[index] : null;
         }
 
         //Binary search to find node
-        private Cell FindHelper(int row, int column, int left, int right)
+        private int FindHelper(int row, int column, int left, int right)
         {
-            if (left > right) return null;
-            if (left >= CELLS.Length) return null;
-            if (right <= -1) return null;
+            if (left > right)           return -1;
+            if (left >= CELLS.Length)   return -1;
+            if (right <= -1)            return -1;
 
             int mid = (left + right) / 2;
 
             Cell n = CELLS[mid];
             int compare = CELLS[mid].Compare(row, column);
 
-            if (compare == 0) { return CELLS[mid]; }
+            if (compare == 0) { return mid; }
 
             if (compare < 0) { return FindHelper(row, column, mid + 1, right); }
             else { return FindHelper(row, column, left, right - 1); }
+        }
+
+        private int GetCellIndex(Cell cell)
+        {
+            return FindHelper(cell.ROW, cell.COLUMN, 0, CELLS.Length);
         }
 
         protected abstract Cell CreateCell(int row, int column);

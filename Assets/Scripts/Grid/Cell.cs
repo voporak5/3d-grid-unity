@@ -7,8 +7,8 @@
 
         public Cell(int row, int column)
         {
-            ROW = row;
-            COLUMN = column;
+            ROW     =   row;
+            COLUMN  =   column;
         }
 
         public int Compare(int row, int column)
@@ -23,7 +23,6 @@
         }
 
         public abstract void SetPosition(int x, int y);
-        public abstract void Select();
-        public abstract void UnSelect();
+        public abstract void SetState(CellStateType state);
     }
 }

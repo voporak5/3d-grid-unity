@@ -11,6 +11,7 @@ namespace CCintron.GridDemo
         private SelectionManager selectionManager;
         private Node selectedNode;
         private List<Cell> selectedCells;
+        private bool canSetNode;
 
         void Start()
         {
@@ -22,7 +23,6 @@ namespace CCintron.GridDemo
 
             selectedCells = new List<Cell>();
 
-
             InputManager.AddListenerMouseMove(OnMouseMoveAction);
             InputManager.AddListenerMouseClick(OnMouseClickAction);
             SelectionManager.AddListenerSelectPiece(OnSelectPieceAction);
@@ -32,7 +32,7 @@ namespace CCintron.GridDemo
         {
             for(int i = 0; i < selectedCells.Count; i++)
             {
-                selectedCells[i].UnSelect();
+                selectedCells[i].SetState(CellStateType.Normal);
             }
 
             selectedCells.Clear();
@@ -41,6 +41,8 @@ namespace CCintron.GridDemo
 
             RowColumnPair center = selectedNode.GetCenterPointFromMouseCoord(v.x, v.z);
             RowColumnPair[] coords = selectedNode.GetCoordsFromPoint(center.Row, center.Column);
+            int nCoords = coords.Length;
+            int nCellsFound = 0;
 
             for(int i = 0; i < coords.Length; i++)
             {
@@ -48,9 +50,32 @@ namespace CCintron.GridDemo
                 Cell cell = grid.Find((int)coord.Row, (int)coord.Column);
                 if (cell != null)
                 {
-                    cell.Select();
+                    nCellsFound++;
                     selectedCells.Add(cell);
                 }
+            }
+
+            if(nCellsFound == nCoords)
+            {
+                selectedNode.SetPosition(center.Row, center.Column);
+                selectedNode.Show();
+                canSetNode = true;
+
+                for (int i = 0; i < selectedCells.Count; i++)
+                {
+                    Cell cell = selectedCells[i];
+                    CellStateType state = grid.GetCanSetNodeInCell(cell) ? CellStateType.Open : CellStateType.Blocked;
+                    cell.SetState(state);
+                    if (state == CellStateType.Blocked)
+                    {
+                        canSetNode = false;
+                        selectedNode.Hide();
+                    }
+                }
+            }
+            else
+            {
+                selectedNode.Hide();
             }
         }
 
@@ -58,9 +83,17 @@ namespace CCintron.GridDemo
         {
             if (selectedNode == null) return;
 
-            RowColumnPair coord = selectedNode.GetCenterPointFromMouseCoord(v.x, v.z);
-            selectedNode.SetPosition(coord.Row, coord.Column);
-            selectedNode.Show();
+            if(canSetNode)
+            {
+                for (int i = 0; i < selectedCells.Count; i++)
+                {
+                    grid.SetNode(selectedNode, selectedCells[i]);
+                }
+            }
+            else
+            {
+                selectedNode.Hide();
+            }
 
             selectedNode = null;
         }

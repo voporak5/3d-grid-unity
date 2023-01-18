@@ -1,12 +1,10 @@
-﻿using UnityEngine;
-using CCintron.Grid;
+﻿using CCintron.Grid;
 
 namespace CCintron.GridDemo
 {
     public class Grid : GridManager
     {
-        private Material cellNeutralMat;
-        private Material cellSelectedMat;
+        CellStateFactory stateFactory;
 
         public Grid(int size) 
             : base(size)
@@ -22,13 +20,12 @@ namespace CCintron.GridDemo
 
         void Init()
         {
-            cellNeutralMat = (Material)Resources.Load("Materials/GridNeutral");
-            cellSelectedMat = (Material)Resources.Load("Materials/GridSelected");
+            stateFactory = new CellStateFactory();
         }
 
         protected override Cell CreateCell(int row, int column)
         {
-            return new GridCell(row, column, cellNeutralMat, cellSelectedMat);
+            return new GridCell(row, column, stateFactory);
         }
     }
 }
