@@ -1,13 +1,7 @@
-﻿using UnityEngine;
-
-namespace CCintron.GridDemo
+﻿namespace CCintron.GridDemo
 {
     public class CellStateOpen : CellState
     {
-        public CellStateOpen()
-        {
-            Material material = (Material)Resources.Load("Materials/GridOpen");
-            Init(material);
-        }
+        public CellStateOpen() : base("Materials/GridOpen") { }
     }
 }

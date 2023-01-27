@@ -1,6 +1,6 @@
 ﻿namespace CCintron.Grid
 {
-    public class RowColumnPair
+    public struct RowColumnPair
     {
         public float Row { get; private set; }
         public float Column { get; private set; }

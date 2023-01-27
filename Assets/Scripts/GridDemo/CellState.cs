@@ -6,9 +6,9 @@ namespace CCintron.GridDemo
     {
         Material material;
 
-        protected void Init(Material material)
+        public CellState(string path)
         {
-            this.material = material;
+            material = (Material)Resources.Load(path);
         }
 
         public void SetState(Renderer context)

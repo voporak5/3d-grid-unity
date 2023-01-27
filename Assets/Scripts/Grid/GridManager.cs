@@ -22,7 +22,9 @@
         {
             ROWS = rows;
             COLUMNS = columns;
-            CELLS = new Cell[ROWS * COLUMNS];
+            CELL_COUNT = ROWS * COLUMNS;
+            CELLS = new Cell[CELL_COUNT];
+            NODES = new Node[CELL_COUNT];
         }
 
         public void Build()
